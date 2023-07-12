@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 import { User, getUsers } from "./model"
-import UserTable from "@/components/user-table";
+import UserTable from "@/components/user-table/user-table";
 import styled from "styled-components";
 
 export interface HomeProps {
