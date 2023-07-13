@@ -1,10 +1,4 @@
-export interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  city: string;
-}
+import { User } from "@/store/users/model";
 
 export function getUsers(): User[] {
     return [
