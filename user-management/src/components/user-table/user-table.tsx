@@ -4,7 +4,8 @@ import { EditBtn } from "../ui/buttons/edit/edit-btn"
 import { DeleteBtn } from "../ui/buttons/delete/delete-btn"
 
 export interface UserTableProps {
-    users: User[]
+    users: User[];
+    onOpenDeleteModal: (user: User) => void;
 }
 
 const Table = styled.table`
@@ -24,7 +25,7 @@ const Cell = styled.td`
     padding: 10px;
 `
 
-export default function UserTable({ users }: UserTableProps) {
+export default function UserTable({ users, onOpenDeleteModal }: UserTableProps) {
     return <Table>
         <thead>
             <HeaderRow>
@@ -45,7 +46,7 @@ export default function UserTable({ users }: UserTableProps) {
                 <Cell>{user.email}</Cell>
                 <Cell>{user.city}</Cell>
                 <Cell><EditBtn>edit</EditBtn></Cell>
-                <Cell><DeleteBtn>delete</DeleteBtn></Cell>
+                <Cell><DeleteBtn onClick={() => onOpenDeleteModal(user)}>delete</DeleteBtn></Cell>
             </Row>))}
         </tbody>
     </Table>

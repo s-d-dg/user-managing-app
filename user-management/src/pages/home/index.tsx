@@ -4,6 +4,9 @@ import UserTable from "@/components/user-table/user-table";
 import styled from "styled-components";
 import Card from "@/components/ui/card/card";
 import { AddNewBtn } from "@/components/ui/buttons/add-new/add-new-btn";
+import Modal from "@/components/modal/modal";
+import { useState } from "react";
+import DeleteUserModal from "@/components/delete-user-modal/delete-user-modal";
 
 export interface HomeProps {
     users: User[]
@@ -26,9 +29,23 @@ const TableContainer = styled.div`
     padding: 0 10px 10px 10px;
 `
 
-
 export default function Home({ users }: HomeProps) {
 
+    const [userToDelete, setUserToDelete] = useState<User | null>(null);
+
+    const onOpenDeleteUserModal = (user: User) => {
+        setUserToDelete(user);
+    };
+
+    const onCancelDeleteUserModal = () => {
+        console.log('on cancel');
+        setUserToDelete(null);
+    }
+
+    const handleDeleteUser = (id: string) => {
+        alert(`User with id: ${id} was deleted !`);
+        setUserToDelete(null);
+    };
 
     return (
         <>
@@ -39,15 +56,21 @@ export default function Home({ users }: HomeProps) {
                         <Header>
                             <span>User List</span>
                             <AddNewBtn>Add new</AddNewBtn>
-                            </Header>
+                        </Header>
 
                         <hr />
                         <TableContainer>
-                        <UserTable users={users} />
+                            <UserTable users={users} onOpenDeleteModal={onOpenDeleteUserModal} />
                         </TableContainer>
                     </Card>
                 </TableCard>
             </div>
+            {userToDelete !== null && <DeleteUserModal
+                id={userToDelete.id}
+                name={userToDelete.name}
+                onDelete={handleDeleteUser}
+                onCancel={onCancelDeleteUserModal}
+            />}
         </>
     )
 }
