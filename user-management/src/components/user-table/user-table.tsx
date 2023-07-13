@@ -1,32 +1,52 @@
 import { User } from "@/pages/home/model"
+import { styled } from "styled-components"
+import { EditBtn } from "../ui/buttons/edit/edit-btn"
+import { DeleteBtn } from "../ui/buttons/delete/delete-btn"
 
 export interface UserTableProps {
     users: User[]
 }
 
+const Table = styled.table`
+border: 2px solid #9d9b9b;
+width: 100%;
+border-collapse: collapse; 
+`
+const Row = styled.tr`
+    border-bottom: 2px solid #d0d0d0;
+`
+
+const HeaderRow = styled(Row)`
+    background-color: #d0d0d0;
+`
+
+const Cell = styled.td`
+    padding: 10px;
+`
+
 export default function UserTable({ users }: UserTableProps) {
-    return <table>
+    return <Table>
         <thead>
-            <tr>
-                <td>Id</td>
-                <td>Name</td>
-                <td>Username</td>
-                <td>Email</td>
-                <td>City</td>
-                <td>Edit</td>
-                <td>Delete</td>
-            </tr>
+            <HeaderRow>
+                <Cell>Id</Cell>
+                <Cell>Name</Cell>
+                <Cell>Username</Cell>
+                <Cell>Email</Cell>
+                <Cell>City</Cell>
+                <Cell>Edit</Cell>
+                <Cell>Delete</Cell>
+            </HeaderRow>
         </thead>
         <tbody>
-            {users.map(user => (<tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.city}</td>
-                <td><button style={{ color: 'orange' }}>edit</button></td>
-                <td><button style={{ color: 'red' }}>delete</button></td>
-            </tr>))}
+            {users.map(user => (<Row key={user.id}>
+                <Cell>{user.id}</Cell>
+                <Cell>{user.name}</Cell>
+                <Cell>{user.username}</Cell>
+                <Cell>{user.email}</Cell>
+                <Cell>{user.city}</Cell>
+                <Cell><EditBtn>edit</EditBtn></Cell>
+                <Cell><DeleteBtn>delete</DeleteBtn></Cell>
+            </Row>))}
         </tbody>
-    </table>
+    </Table>
 }

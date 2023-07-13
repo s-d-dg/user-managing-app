@@ -2,14 +2,30 @@ import { GetServerSideProps } from "next"
 import { User, getUsers } from "./model"
 import UserTable from "@/components/user-table/user-table";
 import styled from "styled-components";
+import Card from "@/components/ui/card/card";
+import { AddNewBtn } from "@/components/ui/buttons/add-new/add-new-btn";
 
 export interface HomeProps {
     users: User[]
 }
 
 export const Header = styled.div`
-background-color: red;
+    padding: 20px 20px 10px 20px;
+    font-size: 26px;
+    font-weight: 800;
+    display: flex;
+    justify-content: space-between;
+    `;
+
+const TableCard = styled.div`
+    width: 90vw;
+    margin: auto;
 `;
+
+const TableContainer = styled.div`
+    padding: 0 10px 10px 10px;
+`
+
 
 export default function Home({ users }: HomeProps) {
 
@@ -18,8 +34,19 @@ export default function Home({ users }: HomeProps) {
         <>
             <div >Home</div>
             <div>
-                <Header>User List</Header>
-                <UserTable users={users} />
+                <TableCard>
+                    <Card>
+                        <Header>
+                            <span>User List</span>
+                            <AddNewBtn>Add new</AddNewBtn>
+                            </Header>
+
+                        <hr />
+                        <TableContainer>
+                        <UserTable users={users} />
+                        </TableContainer>
+                    </Card>
+                </TableCard>
             </div>
         </>
     )
