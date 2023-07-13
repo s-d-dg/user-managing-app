@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export interface CardProps {
-    children?: React.ReactNode; // best, accepts everything React can render
+    children?: React.ReactNode;
 }
 
 const EmptyCard = styled.div`

@@ -1,11 +1,13 @@
-import { User } from "@/pages/home/model"
 import { styled } from "styled-components"
 import { EditBtn } from "../ui/buttons/edit/edit-btn"
 import { DeleteBtn } from "../ui/buttons/delete/delete-btn"
+import { User } from "@/store/users/model";
+import { useRouter } from "next/router";
 
 export interface UserTableProps {
     users: User[];
-    onOpenDeleteModal: (user: User) => void;
+    onDelete: (user: User) => void;
+    onEdit: (id: string) => void;
 }
 
 const Table = styled.table`
@@ -25,7 +27,7 @@ const Cell = styled.td`
     padding: 10px;
 `
 
-export default function UserTable({ users, onOpenDeleteModal }: UserTableProps) {
+export default function UserTable({ users, onDelete, onEdit }: UserTableProps) {
     return <Table>
         <thead>
             <HeaderRow>
@@ -45,8 +47,8 @@ export default function UserTable({ users, onOpenDeleteModal }: UserTableProps) 
                 <Cell>{user.username}</Cell>
                 <Cell>{user.email}</Cell>
                 <Cell>{user.city}</Cell>
-                <Cell><EditBtn>edit</EditBtn></Cell>
-                <Cell><DeleteBtn onClick={() => onOpenDeleteModal(user)}>delete</DeleteBtn></Cell>
+                <Cell><EditBtn onClick={() => onEdit(user.id)}>edit</EditBtn></Cell>
+                <Cell><DeleteBtn onClick={() => onDelete(user)}>delete</DeleteBtn></Cell>
             </Row>))}
         </tbody>
     </Table>

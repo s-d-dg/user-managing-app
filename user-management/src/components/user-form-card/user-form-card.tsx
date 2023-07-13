@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Card from "../ui/card/card";
 import UserForm from "./user-form/user-form";
+import { User } from "@/store/users/model";
 
 const FormCard = styled.div`
     width: 40vw;
@@ -19,16 +20,20 @@ const FormContainer = styled.div`
 
 export interface UserFormCardProps {
     title: string;
+    onCancel: () => void;
+    onSubmit: (user: User) => void;
+    user?: User;
 }
 
 
 export default function UserFormCard(props: UserFormCardProps) {
+    const { title, onCancel, onSubmit, user } = props;
     return <FormCard>
         <Card>
-            <FormTitle>{props.title}</FormTitle>
+            <FormTitle>{title}</FormTitle>
             <hr />
             <FormContainer>
-            <UserForm />
+            <UserForm onCancel={onCancel} onSubmit={onSubmit} user={user}/>
             </FormContainer>
         </Card>
     </FormCard>

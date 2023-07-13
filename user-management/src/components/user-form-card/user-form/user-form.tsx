@@ -1,6 +1,7 @@
-import { CancelBtn } from "@/components/ui/buttons/cancel/cancel-btn";
+import { CancelBtn } from "@/components/ui/buttons/cancel-form/cancel-btn";
 import { SubmitBtn } from "@/components/ui/buttons/submit/submit-btn";
 import { FormInput } from "@/components/ui/input/form-input";
+import { User } from "@/store/users/model";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { styled } from "styled-components";
 
@@ -32,7 +33,13 @@ const CancelBtnContainer = styled(CancelBtn)`
     margin-right: 10px;
 `;
 
-export default function UserForm() {
+export interface UserFormProps {
+    user?: User;
+    onCancel: () => void;
+    onSubmit: (user: User) => void;
+}
+
+export default function UserForm({user, onCancel, onSubmit}: UserFormProps) {
     const {
         register,
         handleSubmit,
@@ -40,12 +47,12 @@ export default function UserForm() {
         formState: { errors },
     } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmitForm: SubmitHandler<Inputs> = (data) => console.log(data)
 
     console.log(watch("name")) // watch input value by passing the name of it
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitForm)}>
 
             <FormRow>
                 <FormLabel>Name:</FormLabel>
@@ -72,7 +79,7 @@ export default function UserForm() {
             </FormRow>
 
             <ButtonsContainer>
-                <CancelBtnContainer>Cancel</CancelBtnContainer>
+                <CancelBtnContainer onClick={onCancel}>Cancel</CancelBtnContainer>
                 <SubmitBtn type="submit">Submit</SubmitBtn>
             </ButtonsContainer>
         </form>

@@ -1,12 +1,17 @@
 import { GetServerSideProps } from "next"
-import { User, getUsers } from "./model"
+import { getUsers } from "./model"
 import UserTable from "@/components/user-table/user-table";
 import styled from "styled-components";
 import Card from "@/components/ui/card/card";
 import { AddNewBtn } from "@/components/ui/buttons/add-new/add-new-btn";
 import Modal from "@/components/modal/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteUserModal from "@/components/delete-user-modal/delete-user-modal";
+import { User } from "@/store/users/model";
+import { useSelector, useDispatch } from 'react-redux'
+import { usersActions } from "@/store/users";
+import Link from 'next/link'
+import { useRouter } from "next/router";
 
 export interface HomeProps {
     users: User[]
@@ -30,38 +35,53 @@ const TableContainer = styled.div`
 `
 
 export default function Home({ users }: HomeProps) {
-
+    const router = useRouter();
+    const dispatch = useDispatch();
+ 
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
+
+    useEffect(() => {
+        dispatch(usersActions.loadUsers({users}));
+    }, []);
+
+
+    const { stateUsers, sortBy, loading } = useSelector(
+        (state: any) => state.users
+    );
 
     const onOpenDeleteUserModal = (user: User) => {
         setUserToDelete(user);
     };
 
     const onCancelDeleteUserModal = () => {
-        console.log('on cancel');
         setUserToDelete(null);
     }
 
     const handleDeleteUser = (id: string) => {
-        alert(`User with id: ${id} was deleted !`);
+        dispatch(usersActions.removeUser({id}));
         setUserToDelete(null);
     };
 
+    const onEdit = (id: string) => {
+        router.push(`/edit/${id}`);
+    }
+
     return (
         <>
-            <div >Home</div>
+            <div>Home</div>
             <div>
                 <TableCard>
                     <Card>
                         <Header>
                             <span>User List</span>
-                            <AddNewBtn>Add new</AddNewBtn>
+                            <Link href="/add"><AddNewBtn>Add new</AddNewBtn></Link>
+                            
                         </Header>
 
                         <hr />
-                        <TableContainer>
-                            <UserTable users={users} onOpenDeleteModal={onOpenDeleteUserModal} />
-                        </TableContainer>
+                        {(stateUsers && stateUsers.length > 0) && <TableContainer>
+                            <UserTable users={stateUsers} onDelete={onOpenDeleteUserModal} onEdit={onEdit}/>
+                        </TableContainer>}
                     </Card>
                 </TableCard>
             </div>
