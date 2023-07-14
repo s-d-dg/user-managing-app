@@ -8,6 +8,8 @@ const EmptyCard = styled.div`
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 6px;
+    min-width: 400px;
+    overflow-x: auto;
 `;
 
 export default function Card({ children }: CardProps) {
