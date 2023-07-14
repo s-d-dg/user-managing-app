@@ -37,17 +37,19 @@ const TableContainer = styled.div`
 export default function Home({ users }: HomeProps) {
     const router = useRouter();
     const dispatch = useDispatch();
- 
+
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
-
-    useEffect(() => {
-        dispatch(usersActions.loadUsers({users}));
-    }, []);
-
 
     const { stateUsers, sortBy, loading } = useSelector(
         (state: any) => state.users
     );
+    useEffect(() => {
+        if (!stateUsers || stateUsers.length === 0) {
+            dispatch(usersActions.loadUsers({ users }));
+        }
+    }, []);
+
+
 
     const onOpenDeleteUserModal = (user: User) => {
         setUserToDelete(user);
@@ -58,7 +60,7 @@ export default function Home({ users }: HomeProps) {
     }
 
     const handleDeleteUser = (id: string) => {
-        dispatch(usersActions.removeUser({id}));
+        dispatch(usersActions.removeUser({ id }));
         setUserToDelete(null);
     };
 
@@ -75,12 +77,12 @@ export default function Home({ users }: HomeProps) {
                         <Header>
                             <span>User List</span>
                             <Link href="/add"><AddNewBtn>Add new</AddNewBtn></Link>
-                            
+
                         </Header>
 
                         <hr />
                         {(stateUsers && stateUsers.length > 0) && <TableContainer>
-                            <UserTable users={stateUsers} onDelete={onOpenDeleteUserModal} onEdit={onEdit}/>
+                            <UserTable users={stateUsers} onDelete={onOpenDeleteUserModal} onEdit={onEdit} />
                         </TableContainer>}
                     </Card>
                 </TableCard>

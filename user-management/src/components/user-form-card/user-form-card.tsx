@@ -21,7 +21,7 @@ const FormContainer = styled.div`
 export interface UserFormCardProps {
     title: string;
     onCancel: () => void;
-    onSubmit: (user: User) => void;
+    onSubmit: (user: Omit<User, "id">) => void;
     user?: User;
 }
 

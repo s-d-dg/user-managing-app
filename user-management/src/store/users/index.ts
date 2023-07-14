@@ -18,17 +18,33 @@ const usersSlice = createSlice({
       state.stateUsers = users;
     },
     removeUser(state, data) {
-        const { id } = data.payload;
+      const { id } = data.payload;
 
-        state.stateUsers = state.stateUsers.filter(user => user.id !== id);
+      state.stateUsers = state.stateUsers.filter((user) => user.id !== id);
     },
     addUser(state, data) {
-        const { userData } = data.payload;
-        const newId = new Number(Math.floor(10 + Math.random()*(1000 - 10 + 1))).toString();
-       
-        state.stateUsers = [...state.stateUsers, {id: newId, ...userData}];
-    }
-  }
+      const { userData } = data.payload;
+
+      // Only temporary method for generating id
+      const newId = new Number(
+        Math.floor(10 + Math.random() * (1000 - 10 + 1))
+      ).toString();
+
+      state.stateUsers = [...state.stateUsers, { id: newId, ...userData }];
+    },
+    editUser(state, data) {
+      const { userData } = data.payload;
+      const index = state.stateUsers.findIndex(
+        (user) => user.id === userData.id
+      );
+
+      if (index > -1) {
+        const updatedUsers = [...state.stateUsers];
+        updatedUsers[index] = { ...userData };
+        state.stateUsers = [...updatedUsers];
+      }
+    },
+  },
 });
 
 export const usersActions = usersSlice.actions;

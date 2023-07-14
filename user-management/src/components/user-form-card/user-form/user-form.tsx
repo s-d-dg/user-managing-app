@@ -36,46 +36,45 @@ const CancelBtnContainer = styled(CancelBtn)`
 export interface UserFormProps {
     user?: User;
     onCancel: () => void;
-    onSubmit: (user: User) => void;
+    onSubmit: (user: Omit<User, "id">) => void;
 }
 
-export default function UserForm({user, onCancel, onSubmit}: UserFormProps) {
+export default function UserForm({ user, onCancel, onSubmit }: UserFormProps) {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<Inputs>()
 
-    const onSubmitForm: SubmitHandler<Inputs> = (data) => console.log(data)
-
-    console.log(watch("name")) // watch input value by passing the name of it
+    const onSubmitForm: SubmitHandler<Inputs> = (data) => {
+        onSubmit({ ...data });
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmitForm)}>
 
             <FormRow>
                 <FormLabel>Name:</FormLabel>
-                <FormInput {...register("name", { required: true })} />
+                <FormInput {...register("name", { value: user ? user.name : "", required: true })} />
                 {errors.name && <div>This field is required</div>}
             </FormRow>
 
             <FormRow>
                 <FormLabel>Username:</FormLabel>
-                <FormInput {...register("name", { required: true })} />
-                {errors.name && <div>This field is required</div>}
+                <FormInput {...register("username", { value: user ? user.username : "", required: true })} />
+                {errors.username && <div>This field is required</div>}
             </FormRow>
 
             <FormRow>
                 <FormLabel>Email:</FormLabel>
-                <FormInput {...register("name", { required: true })} />
-                {errors.name && <div>This field is required</div>}
+                <FormInput {...register("email", { value: user ? user.email : "", required: true })} />
+                {errors.email && <div>This field is required</div>}
             </FormRow>
 
             <FormRow>
                 <FormLabel>City:</FormLabel>
-                <FormInput {...register("name", { required: true })} />
-                {errors.name && <div>This field is required</div>}
+                <FormInput {...register("city", { value: user ? user.city : "", required: true })} />
+                {errors.city && <div>This field is required</div>}
             </FormRow>
 
             <ButtonsContainer>
