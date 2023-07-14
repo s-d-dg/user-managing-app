@@ -1,10 +1,8 @@
 import { GetServerSideProps } from "next"
-import { getUsers } from "./model"
 import UserTable from "@/components/user-table/user-table";
 import styled from "styled-components";
 import Card from "@/components/ui/card/card";
 import { AddNewBtn } from "@/components/ui/buttons/add-new/add-new-btn";
-import Modal from "@/components/modal/modal";
 import { useEffect, useState } from "react";
 import DeleteUserModal from "@/components/delete-user-modal/delete-user-modal";
 import { User } from "@/store/users/model";
@@ -12,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { usersActions } from "@/store/users";
 import Link from 'next/link'
 import { useRouter } from "next/router";
+import getUsers from "../../../lib/users-source";
 
 export interface HomeProps {
     users: User[]
@@ -39,15 +38,15 @@ export default function Home({ users }: HomeProps) {
     const dispatch = useDispatch();
 
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
-
-    const { stateUsers, sortBy, loading } = useSelector(
+    const { stateUsers } = useSelector(
         (state: any) => state.users
     );
+ 
     useEffect(() => {
         if (!stateUsers || stateUsers.length === 0) {
             dispatch(usersActions.loadUsers({ users }));
         }
-    }, []);
+    }, [dispatch, stateUsers, users]);
 
 
 

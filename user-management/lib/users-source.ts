@@ -1,6 +1,6 @@
 import { User } from "@/store/users/model";
 
-export function getUsers(): User[] {
+export default function getUsers(): User[] {
     return [
         {
           id: "1",
